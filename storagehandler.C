@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <time.h>
+#include <sys/time.h>
 #include <arpa/inet.h>
 
 #include "storagehandler.h"
@@ -57,9 +58,20 @@ ipmi_ret_t ipmi_storage_set_sel_time(ipmi_netfn_t netfn, ipmi_cmd_t cmd,
     printf("Handling Set-SEL-Time:[0x%X], Cmd:[0x%X]\n",netfn, cmd);
     printf("Data: 0x%X]\n",*bufftype);
 
-    g_sel_time = *bufftype;
-
+    struct timeval sel_time;
+    sel_time.tv_sec = *bufftype;
     ipmi_ret_t rc = IPMI_CC_OK;
+    int rct = settimeofday(&sel_time, NULL);
+
+    if(rct == 0)
+    {
+	system("hwclock -w");
+    }
+    else
+    {
+        printf("settimeofday() failed\n");
+        rc = IPMI_CC_UNSPECIFIED_ERROR;
+    }
     *data_len = 0;
     return rc;
 }
