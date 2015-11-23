@@ -45,8 +45,8 @@ ipmi_ret_t ipmi_app_get_device_id(ipmi_netfn_t netfn, ipmi_cmd_t cmd,
     // This value is the IANA number assigned to "IBM Platform Firmware
     // Division", which is also used by our service processor.  We may want
     // a different number or at least a different version?
-    uint8_t str[] = {0x00, 0, 1, 1,2, 0xD, 0x41, 0xA7, 0x00, 0x43, 0x40};
-
+    uint8_t str[] = {0x00, 0, 0, 3,2, 0xD, 0x41, 0xA7, 0x00, 0x43, 0x40};
+// Change to 0.3 for versio control.
     // Data length
     *data_len = sizeof(str);
 
